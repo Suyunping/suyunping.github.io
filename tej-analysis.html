@@ -1,0 +1,899 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#1F4E79" />
+    <title>TEJ 財報分析與企業評價｜蘇芸平</title>
+    <style>
+      :root {
+        --primary: #1f4e79;
+        --primary-700: #163a62;
+        --data: #0f766e;
+        --text: #0f172a;
+        --muted: #475569;
+        --bg: #ffffff;
+        --surface: #f8fafc;
+        --border: rgba(15, 23, 42, 0.12);
+        --shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+        --radius: 16px;
+        --container: 1120px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
+          "Apple Color Emoji", "Segoe UI Emoji";
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.65;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .container {
+        width: min(var(--container), calc(100% - 2rem));
+        margin: 0 auto;
+      }
+
+      .skip-link {
+        position: absolute;
+        left: -999px;
+        top: 10px;
+        background: #fff;
+        color: var(--primary);
+        border: 1px solid var(--border);
+        padding: 10px 14px;
+        border-radius: 999px;
+        z-index: 9999;
+      }
+      .skip-link:focus {
+        left: 10px;
+        outline: 3px solid rgba(31, 78, 121, 0.25);
+      }
+
+      /* Top */
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: rgba(255, 255, 255, 0.78);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+      }
+
+      .topbar-inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 14px;
+        padding: 12px 0;
+      }
+
+      .brand {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        font-weight: 900;
+        letter-spacing: 0.2px;
+      }
+      .brand .name-cn {
+        color: var(--primary);
+        font-size: 16px;
+      }
+      .brand .name-en {
+        font-size: 14px;
+        color: var(--muted);
+        font-weight: 800;
+      }
+
+      .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+      }
+      .nav-links a {
+        padding: 9px 12px;
+        border-radius: 999px;
+        font-weight: 900;
+        font-size: 13.5px;
+        color: var(--muted);
+        border: 1px solid transparent;
+        transition: background 160ms ease, color 160ms ease, border-color 160ms ease, transform 160ms ease;
+        white-space: nowrap;
+      }
+      .nav-links a:hover {
+        background: rgba(31, 78, 121, 0.08);
+        color: var(--primary-700);
+        transform: translateY(-1px);
+      }
+      .nav-links a:focus-visible {
+        outline: 3px solid rgba(31, 78, 121, 0.25);
+        outline-offset: 2px;
+      }
+
+      .page-head {
+        padding: 44px 0 18px;
+      }
+
+      .page-head-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 22px;
+        align-items: start;
+      }
+
+      .page-title {
+        background:
+          radial-gradient(800px 280px at 20% 0%, rgba(31, 78, 121, 0.12), transparent 60%),
+          radial-gradient(600px 220px at 90% 10%, rgba(31, 78, 121, 0.08), transparent 55%);
+        border-radius: var(--radius);
+        border: 1px solid rgba(15, 23, 42, 0.08);
+        padding: 22px;
+        box-shadow: 0 14px 30px rgba(15, 23, 42, 0.05);
+      }
+
+      .kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(31, 78, 121, 0.18);
+        background: rgba(31, 78, 121, 0.04);
+        font-weight: 950;
+        color: var(--primary-700);
+        font-size: 13px;
+      }
+
+      .page-title h1 {
+        margin: 12px 0 0;
+        font-size: clamp(28px, 3.4vw, 44px);
+        letter-spacing: -0.02em;
+        line-height: 1.08;
+      }
+
+      .page-title .subtitle {
+        margin: 12px 0 0;
+        font-weight: 800;
+        color: var(--primary-700);
+        font-size: clamp(15px, 1.6vw, 18px);
+      }
+
+      .meta {
+        margin-top: 14px;
+        padding-top: 14px;
+        border-top: 1px solid rgba(15, 23, 42, 0.08);
+        color: var(--muted);
+        font-weight: 700;
+      }
+      .meta p {
+        margin: 8px 0 0;
+      }
+
+      .return-box {
+        background: rgba(31, 78, 121, 0.04);
+        border: 1px solid rgba(31, 78, 121, 0.18);
+        border-radius: var(--radius);
+        padding: 18px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 12px 16px;
+        border-radius: 12px;
+        font-weight: 950;
+        border: 1px solid transparent;
+        cursor: pointer;
+        transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease, border-color 160ms ease;
+        user-select: none;
+        white-space: nowrap;
+      }
+
+      .btn-primary {
+        background: var(--primary);
+        color: #fff;
+        box-shadow: 0 10px 20px rgba(31, 78, 121, 0.22);
+      }
+      .btn-primary:hover {
+        background: var(--primary-700);
+        transform: translateY(-1px);
+        box-shadow: 0 14px 26px rgba(31, 78, 121, 0.26);
+      }
+      .btn-primary:focus-visible {
+        outline: 3px solid rgba(31, 78, 121, 0.25);
+        outline-offset: 2px;
+      }
+
+      .btn-ghost {
+        background: rgba(31, 78, 121, 0.06);
+        border-color: rgba(31, 78, 121, 0.18);
+        color: var(--primary-700);
+      }
+      .btn-ghost:hover {
+        background: rgba(31, 78, 121, 0.10);
+        transform: translateY(-1px);
+      }
+
+      /* Sections */
+      section {
+        padding: 26px 0;
+        scroll-margin-top: 96px;
+      }
+
+      .section-title-row {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 14px;
+      }
+
+      .section-title-row h2 {
+        margin: 0;
+        font-size: 22px;
+        letter-spacing: -0.01em;
+      }
+
+      .conclusion-card {
+        background: var(--primary);
+        color: #fff;
+        border-radius: var(--radius);
+        padding: 18px;
+        box-shadow: 0 14px 30px rgba(31, 78, 121, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+      }
+
+      .conclusion-card p {
+        margin: 0;
+        font-weight: 900;
+        letter-spacing: 0.1px;
+      }
+
+      .calc-details {
+        margin-top: 14px;
+        border-radius: var(--radius);
+        border: 1px solid rgba(15, 23, 42, 0.10);
+        background: #fff;
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.03);
+      }
+
+      .calc-details > summary {
+        list-style: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        font-weight: 950;
+        color: var(--primary-700);
+      }
+
+      .calc-details > summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .calc-body {
+        padding: 0 16px 16px;
+      }
+
+      .subhead {
+        margin: 12px 0 8px;
+        font-weight: 950;
+        color: var(--primary-700);
+      }
+
+      .formula {
+        background: rgba(31, 78, 121, 0.05);
+        border: 1px solid rgba(31, 78, 121, 0.14);
+        border-radius: 12px;
+        padding: 10px 12px;
+        font-weight: 900;
+        color: var(--primary-700);
+      }
+
+      .list {
+        margin: 10px 0 0;
+        padding-left: 18px;
+        color: var(--muted);
+        font-weight: 700;
+      }
+
+      .code-block {
+        margin-top: 12px;
+        background: #0b1220;
+        color: #e5e7eb;
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        border-radius: 14px;
+        padding: 14px;
+        overflow: auto;
+      }
+
+      .code-block pre {
+        margin: 0;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+          "Courier New", monospace;
+        font-size: 13px;
+        line-height: 1.55;
+        white-space: pre;
+      }
+
+      /* Tables */
+      .table-wrap {
+        overflow: auto;
+        border-radius: var(--radius);
+        border: 1px solid rgba(15, 23, 42, 0.10);
+        background: #fff;
+        margin-top: 12px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 720px;
+      }
+
+      th,
+      td {
+        padding: 12px 12px;
+        border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+        text-align: left;
+        vertical-align: top;
+        font-weight: 750;
+        color: var(--muted);
+      }
+
+      th {
+        position: sticky;
+        top: 0;
+        background: rgba(31, 78, 121, 0.08);
+        color: var(--primary-700);
+        font-weight: 950;
+      }
+
+      .table-strong {
+        color: var(--text);
+        font-weight: 950;
+      }
+
+      /* Final area */
+      .summary-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .footer-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin: 18px 0 8px;
+      }
+
+      @media (max-width: 980px) {
+        .page-head-grid {
+          grid-template-columns: 1fr;
+        }
+
+        table {
+          min-width: 680px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#discount-rate">跳到主要內容</a>
+
+    <div class="topbar" role="navigation" aria-label="TEJ 導覽列">
+      <div class="container topbar-inner">
+        <div class="brand" aria-label="網站品牌">
+          <span class="name-cn">蘇芸平</span>
+          <span class="name-en">TEJ Analysis</span>
+        </div>
+
+        <div class="nav-links" aria-label="區塊導覽">
+          <a href="#discount-rate">折現率設定</a>
+          <a href="#ddm">股利折現模型（DDM）</a>
+          <a href="#ohlson">Ohlson模型</a>
+          <a href="#relative">相對評價模式</a>
+        </div>
+      </div>
+    </div>
+
+    <header class="page-head">
+      <div class="container page-head-grid">
+        <div class="page-title">
+          <div class="kicker">團體專案｜個人負責章節</div>
+          <h1>TEJ 財報分析與企業評價</h1>
+          <div class="subtitle">股票評價分析｜統一企業 × 味全</div>
+          <div class="meta">
+            <p>本頁為團體專案中個人負責章節（第五章：股票評價分析），完整報告請見文末連結。</p>
+            <p>分析對象：統一企業（1216）、味全（1201）</p>
+            <p>使用工具：Stata、TEJ資料庫</p>
+            <p>分析期間：2013–2017年財報資料</p>
+          </div>
+        </div>
+
+        <aside class="return-box" aria-label="返回主頁">
+          <div class="subhead" style="margin-top: 0;">頁首操作</div>
+          <a class="btn btn-ghost" href="index.html" aria-label="返回主頁">
+            ← 返回作品集
+          </a>
+        </aside>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- 1. Discount rate -->
+      <section id="discount-rate" aria-label="折現率設定">
+        <div class="section-title-row">
+          <h2>折現率設定</h2>
+        </div>
+
+        <div class="conclusion-card" role="note" aria-label="結論卡片：折現率設定">
+          <p>
+            食品業年均報酬率原始數據為11.94%，因存在極端離群值（最大值達428.5%），以Stata剔除超過2個標準差的觀測值（約3.6%）後，修正為6.39%。此數值落於CAPM折現率合理區間（5.5%~7.6%），作為後續統一計算折現率。
+          </p>
+        </div>
+
+        <details class="calc-details">
+          <summary>展開詳細計算</summary>
+          <div class="calc-body">
+            <ul class="list">
+              <li>原始假設：TAIEX 2013-2017年均報酬率7.108%</li>
+              <li>
+                食品業限縮：TEJ資料庫取得食品產業上市公司數據，原始平均11.94%
+              </li>
+              <li>
+                Stata處理：23,568筆觀測值，剔除Z分數&gt;2的離群值863筆（約3.6%）
+              </li>
+              <li>剔除後：22,705筆，平均報酬率6.39%，標準差降至23.84</li>
+              <li>CAPM驗證：無風險利率1.5%~1.6% + 風險溢酬4%~6% = 5.5%~7.6%</li>
+              <li>結論：6.39%落於合理區間，採用此值作為統一折現率</li>
+            </ul>
+
+            <div class="subhead">Stata程式碼</div>
+            <div class="code-block" aria-label="Stata程式碼區塊">
+              <pre><code>import excel "C:\Users\Su\Desktop\1.xlsx", sheet("工作表1")
+describe
+gen return = A
+summarize return, detail
+graph box return, title("年均報酬率分布") ylabel(, angle(0)) ytitle("報酬率")
+egen mean_return = mean(return)
+egen sd_return = sd(return)
+gen outlier = abs((return-mean_return)/sd_return) &gt; 2
+drop if outlier
+summarize return
+graph box return, title("年均報酬率分布") ylabel(, angle(0)) ytitle("報酬率")</code></pre>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <!-- 2. DDM -->
+      <section id="ddm" aria-label="股利折現模型（DDM）">
+        <div class="section-title-row">
+          <h2>股利折現模型（DDM）</h2>
+        </div>
+
+        <div class="subhead">模型比較總表</div>
+        <div class="table-wrap">
+          <table aria-label="DDM模型比較總表">
+            <thead>
+              <tr>
+                <th style="min-width: 140px;">模型</th>
+                <th>統一企業預測</th>
+                <th>統一企業調整後</th>
+                <th>統一實際均值</th>
+                <th>味全預測</th>
+                <th>味全實際均值</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>零成長</td>
+                <td class="table-strong">26.29元</td>
+                <td>無調整</td>
+                <td class="table-strong">70.79元</td>
+                <td class="table-strong">3.76元</td>
+                <td class="table-strong">21.25元</td>
+              </tr>
+              <tr>
+                <td>固定成長</td>
+                <td>模型不適用</td>
+                <td class="table-strong">46.84元</td>
+                <td class="table-strong">70.79元</td>
+                <td>不適用</td>
+                <td class="table-strong">21.25元</td>
+              </tr>
+              <tr>
+                <td>非固定成長</td>
+                <td class="table-strong">68.16元</td>
+                <td class="table-strong">70.72元</td>
+                <td class="table-strong">70.79元</td>
+                <td>不適用</td>
+                <td class="table-strong">21.25元</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="conclusion-card" role="note" aria-label="結論卡片：DDM">
+          <p>
+            三種DDM模型中，非固定成長模型經多次參數調整後（g1=11.5%, g2=3.1%），預測統一企業股價70.72元，與實際均值70.79元高度吻合。味全因2015年起停止發放股利，三種模型均不適用。
+          </p>
+        </div>
+
+        <details class="calc-details">
+          <summary>展開詳細計算</summary>
+          <div class="calc-body">
+            <div class="subhead">零成長模型</div>
+            <div class="formula">公式：P = D / k</div>
+            <ul class="list">
+              <li>統一企業：D=1.68元，k=6.39%，P=26.29元（低估原因：忽略成長性與多元化業務）</li>
+              <li>味全：D=0.24元，k=6.39%，P=3.76元（低估原因：2015年起停止發股利，模型不適用）</li>
+            </ul>
+
+            <div class="subhead">固定成長模型</div>
+            <div class="formula">公式：P = D1 / (k - g)</div>
+            <ul class="list">
+              <li>統一企業：g=12.08% &gt; k=6.39%，分母為負，模型不適用</li>
+              <li>排除2016年波動後重算：g=1.82%，P=46.84元（仍低於實際）</li>
+              <li>味全：無法計算股利成長率，不適用</li>
+            </ul>
+
+            <div class="subhead">非固定成長模型</div>
+            <div class="subhead" style="margin-top: 10px;">統一企業調整過程表格</div>
+            <div class="table-wrap">
+              <table aria-label="非固定成長模型調整過程">
+                <thead>
+                  <tr>
+                    <th style="min-width: 170px;">調整次數</th>
+                    <th>k</th>
+                    <th>g1</th>
+                    <th>g2</th>
+                    <th>預測股價</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>初始</td>
+                    <td class="table-strong">6.39%</td>
+                    <td class="table-strong">14.44%</td>
+                    <td class="table-strong">2.00%</td>
+                    <td class="table-strong">68.16元</td>
+                  </tr>
+                  <tr>
+                    <td>第1次</td>
+                    <td class="table-strong">6.39%</td>
+                    <td class="table-strong">13.00%</td>
+                    <td class="table-strong">2.50%</td>
+                    <td class="table-strong">69.12元</td>
+                  </tr>
+                  <tr>
+                    <td>第2次</td>
+                    <td class="table-strong">6.39%</td>
+                    <td class="table-strong">12.50%</td>
+                    <td class="table-strong">2.70%</td>
+                    <td class="table-strong">69.86元</td>
+                  </tr>
+                  <tr>
+                    <td>第3次</td>
+                    <td class="table-strong">6.39%</td>
+                    <td class="table-strong">12.00%</td>
+                    <td class="table-strong">2.90%</td>
+                    <td class="table-strong">70.43元</td>
+                  </tr>
+                  <tr>
+                    <td>第4次</td>
+                    <td class="table-strong">6.39%</td>
+                    <td class="table-strong">11.80%</td>
+                    <td class="table-strong">3.00%</td>
+                    <td class="table-strong">70.65元</td>
+                  </tr>
+                  <tr>
+                    <td>第5次</td>
+                    <td class="table-strong">6.39%</td>
+                    <td class="table-strong">11.50%</td>
+                    <td class="table-strong">3.10%</td>
+                    <td class="table-strong">70.72元（實際：70.79元）</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <!-- 3. Ohlson -->
+      <section id="ohlson" aria-label="Ohlson模型">
+        <div class="section-title-row">
+          <h2>Ohlson模型（剩餘淨利評價法）</h2>
+        </div>
+
+        <div class="conclusion-card" role="note" aria-label="結論卡片：Ohlson模型">
+          <p>
+            Ohlson模型在三種成長假設下均低估兩家公司股價，主要原因為模型假設過於保守，未能反映統一企業多元化業務的穩健成長潛力，以及味全品牌修復後的市場預期。
+          </p>
+        </div>
+
+        <div class="subhead">模型結果總表</div>
+        <div class="table-wrap">
+          <table aria-label="Ohlson模型結果總表">
+            <thead>
+              <tr>
+                <th style="min-width: 220px;">情況</th>
+                <th>統一企業預測</th>
+                <th>統一實際(2020)</th>
+                <th>味全預測</th>
+                <th>味全實際(2020)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>情況一：2024後無剩餘淨利</td>
+                <td class="table-strong">38.02元</td>
+                <td class="table-strong">68.28元</td>
+                <td class="table-strong">14.27元</td>
+                <td class="table-strong">21.24元</td>
+              </tr>
+              <tr>
+                <td>情況二：2024後零成長</td>
+                <td class="table-strong">43.39元</td>
+                <td class="table-strong">68.28元</td>
+                <td class="table-strong">14.55元</td>
+                <td class="table-strong">21.24元</td>
+              </tr>
+              <tr>
+                <td>情況三：2024後成長2%</td>
+                <td class="table-strong">43.60元</td>
+                <td class="table-strong">68.28元</td>
+                <td class="table-strong">14.56元</td>
+                <td class="table-strong">21.24元</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <details class="calc-details">
+          <summary>展開詳細計算</summary>
+          <div class="calc-body">
+            <div class="subhead">展開詳細計算（統一企業｜情況三為例）</div>
+            <ul class="list">
+              <li>折現率k=8%</li>
+              <li>2021-2023淨利與超額報酬計算表格（完整數字如文件所示）</li>
+              <li>預期每股股價：43.60元；實際：68.28元</li>
+            </ul>
+
+            <div class="subhead">展開詳細計算（味全）</div>
+            <ul class="list">
+              <li>折現率k=3%（設定3%以上超額報酬為負）</li>
+              <li>三種情況估值：14.27~14.56元；實際：21.24元</li>
+              <li>原因：食安事件影響、品牌修復市場預期未被模型捕捉</li>
+            </ul>
+          </div>
+        </details>
+      </section>
+
+      <!-- 4. Relative valuation -->
+      <section id="relative" aria-label="相對評價模式">
+        <div class="section-title-row">
+          <h2>相對評價模式（P/E &amp; P/B）</h2>
+        </div>
+
+        <div class="conclusion-card" role="note" aria-label="結論卡片：相對評價模式">
+          <p>
+            以五家同業平均P/E（21.02）與P/B（1.72）為基準，納入2013年食品油品事件對品牌影響後調整參數，調整後統一企業預測股價72.85元（實際72.86元）、味全22.65元（實際22.65元），兩者幾乎完全吻合。
+          </p>
+        </div>
+
+        <details class="calc-details">
+          <summary>展開詳細計算</summary>
+          <div class="calc-body">
+            <div class="subhead">同業比較表格</div>
+            <div class="table-wrap">
+              <table aria-label="同業比較表格（P/E &amp; P/B）">
+                <thead>
+                  <tr>
+                    <th>公司</th>
+                    <th>2018預估EPS</th>
+                    <th>每股市價</th>
+                    <th>2017每股淨值</th>
+                    <th>預估P/E</th>
+                    <th>P/B</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>大成</td>
+                    <td class="table-strong">3.30元</td>
+                    <td class="table-strong">53.80元</td>
+                    <td class="table-strong">35.00元</td>
+                    <td class="table-strong">16.3</td>
+                    <td class="table-strong">1.54</td>
+                  </tr>
+                  <tr>
+                    <td>卜蜂</td>
+                    <td class="table-strong">3.50元</td>
+                    <td class="table-strong">100.50元</td>
+                    <td class="table-strong">40.00元</td>
+                    <td class="table-strong">28.7</td>
+                    <td class="table-strong">2.51</td>
+                  </tr>
+                  <tr>
+                    <td>泰山</td>
+                    <td class="table-strong">1.20元</td>
+                    <td class="table-strong">20.95元</td>
+                    <td class="table-strong">15.00元</td>
+                    <td class="table-strong">17.5</td>
+                    <td class="table-strong">1.40</td>
+                  </tr>
+                  <tr>
+                    <td>黑松</td>
+                    <td class="table-strong">1.50元</td>
+                    <td class="table-strong">41.60元</td>
+                    <td class="table-strong">20.00元</td>
+                    <td class="table-strong">27.7</td>
+                    <td class="table-strong">2.08</td>
+                  </tr>
+                  <tr>
+                    <td>愛之味</td>
+                    <td class="table-strong">0.80元</td>
+                    <td class="table-strong">11.90元</td>
+                    <td class="table-strong">10.95元</td>
+                    <td class="table-strong">14.9</td>
+                    <td class="table-strong">1.09</td>
+                  </tr>
+                  <tr>
+                    <td class="table-strong">平均</td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td class="table-strong">21.02</td>
+                    <td class="table-strong">1.72</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="subhead">調整前後對照表格</div>
+            <div class="table-wrap">
+              <table aria-label="調整前後對照表格（P/E &amp; P/B）">
+                <thead>
+                  <tr>
+                    <th>公司</th>
+                    <th>實際股價</th>
+                    <th>P/E調整前</th>
+                    <th>P/E調整後</th>
+                    <th>P/B調整前</th>
+                    <th>P/B調整後</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>統一企業</td>
+                    <td class="table-strong">72.86元</td>
+                    <td class="table-strong">105.10元</td>
+                    <td class="table-strong">72.85元</td>
+                    <td class="table-strong">82.56元</td>
+                    <td class="table-strong">72.96元</td>
+                  </tr>
+                  <tr>
+                    <td>味全</td>
+                    <td class="table-strong">22.65元</td>
+                    <td class="table-strong">63.06元</td>
+                    <td class="table-strong">22.65元</td>
+                    <td class="table-strong">58.48元</td>
+                    <td class="table-strong">22.78元</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <ul class="list">
+              <li>調整原因：2013年食品油品事件導致品牌聲譽損失，統一P/E從21.02調整為14.57，味全從21.02調整為7.55</li>
+            </ul>
+          </div>
+        </details>
+      </section>
+
+      <!-- 5. Summary -->
+      <section id="summary" aria-label="綜合結論">
+        <div class="section-title-row">
+          <h2>綜合結論</h2>
+        </div>
+
+        <div class="summary-grid">
+          <div class="subhead">最終模型比較總表</div>
+          <div class="table-wrap">
+            <table aria-label="最終模型比較總表">
+              <thead>
+                <tr>
+                  <th style="min-width: 180px;">模型</th>
+                  <th>統一結果</th>
+                  <th>味全結果</th>
+                  <th style="min-width: 240px;">適用性評估</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>股利零成長</td>
+                  <td class="table-strong">26.29元（低估）</td>
+                  <td>不適用</td>
+                  <td>忽略成長性，統一低估；味全無法適用</td>
+                </tr>
+                <tr>
+                  <td>股利固定成長</td>
+                  <td>不適用（g&gt;k）</td>
+                  <td>不適用</td>
+                  <td>兩者均有限制</td>
+                </tr>
+                <tr>
+                  <td>股利非固定成長</td>
+                  <td class="table-strong">調整後70.72元✓</td>
+                  <td>不適用</td>
+                  <td>統一最佳模型（調整後）</td>
+                </tr>
+                <tr>
+                  <td>Ohlson模型</td>
+                  <td class="table-strong">最高43.60元（低估）</td>
+                  <td class="table-strong">最高14.56元（低估）</td>
+                  <td>保守假設導致低估</td>
+                </tr>
+                <tr>
+                  <td>P/E相對評價</td>
+                  <td class="table-strong">調整後72.85元✓</td>
+                  <td class="table-strong">調整後22.65元✓</td>
+                  <td>調整後兩者最準確</td>
+                </tr>
+                <tr>
+                  <td>P/B相對評價</td>
+                  <td class="table-strong">調整後72.96元✓</td>
+                  <td class="table-strong">調整後22.78元✓</td>
+                  <td>調整後兩者最準確</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="conclusion-card" aria-label="結論文字">
+            <p style="font-weight: 950;">
+              統一企業：最佳模型為「股利非固定成長模型（調整後）」與「相對評價模式（調整後）」，均能準確反映其股價。<br />
+              味全：因停止發放股利，股利相關模型均不適用，「相對評價模式（調整後）」為最佳選擇，且需納入食安事件對品牌的折價影響。<br />
+              核心學習：財務估值模型不應機械套用，需結合企業特性、產業背景與市場事件動態調整參數，才能反映真實股價。
+            </p>
+          </div>
+
+          <div class="footer-actions" aria-label="文末連結與返回主頁">
+            <a
+              class="btn btn-primary"
+              href="https://drive.google.com/file/d/16Twe9gsOCy0wNjtWZDZZam6uawyOMStL/view"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              查看完整團體報告
+            </a>
+
+            <a class="btn btn-ghost" href="index.html" aria-label="返回作品集">
+              ← 返回作品集
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
+
