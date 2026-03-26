@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>股往今 LINE Bot｜蘇芸平作品集</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Noto Sans TC', Arial, sans-serif; color: #333; background: #f8f9fa; }
+
+  /* 導覽列 */
+  nav {
+    background: #1F4E79;
+    padding: 16px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  nav .nav-brand { color: white; font-weight: bold; font-size: 1rem; text-decoration: none; }
+  nav .nav-links { display: flex; gap: 32px; }
+  nav .nav-links a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 0.9rem; }
+  nav .nav-links a:hover { color: white; }
+
+  /* 頁首 */
+  .hero {
+    background: linear-gradient(135deg, #1F4E79 0%, #2E75B6 100%);
+    color: white;
+    padding: 60px 40px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .hero-tags { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+  .tag {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    border: 1px solid rgba(255,255,255,0.4);
+    color: rgba(255,255,255,0.9);
+  }
+  .hero h1 { font-size: 2.2rem; font-weight: bold; margin-bottom: 10px; }
+  .hero .subtitle { font-size: 1rem; opacity: 0.85; margin-bottom: 20px; }
+  .hero-meta { display: flex; gap: 20px; flex-wrap: wrap; font-size: 0.9rem; opacity: 0.8; }
+
+  /* 主內容 */
+  .container { max-width: 900px; margin: 0 auto; padding: 40px; }
+
+  /* 區塊標題 */
+  .section-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #1F4E79;
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 3px solid #1F4E79;
+  }
+
+  /* 卡片 */
+  .card {
+    background: white;
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border-left: 4px solid #2E75B6;
+  }
+
+  /* 我的角色區塊 */
+  .role-highlight {
+    background: #1F4E79;
+    color: white;
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  .role-highlight h3 { font-size: 1rem; opacity: 0.8; margin-bottom: 8px; }
+  .role-highlight p { font-size: 1.1rem; line-height: 1.8; }
+
+  /* 技術標籤 */
+  .tech-tags { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+  .tech-tag {
+    background: #EBF3FB;
+    color: #1F4E79;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+
+  /* 架構圖 */
+  .arch-img {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    margin-top: 12px;
+  }
+
+  /* 截圖展示 */
+  .screenshots {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 12px;
+  }
+  .screenshot-item { text-align: center; }
+  .screenshot-item img {
+    width: 100%;
+    max-width: 200px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    border: 1px solid #e0e0e0;
+  }
+  .screenshot-item p {
+    margin-top: 8px;
+    font-size: 0.85rem;
+    color: #555;
+    font-weight: 500;
+  }
+
+  /* 功能列表 */
+  .feature-list { list-style: none; }
+  .feature-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  .feature-list li:last-child { border-bottom: none; }
+  .feature-list li::before {
+    content: "▸";
+    color: #2E75B6;
+    font-weight: bold;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* 未來展望 */
+  .future-list { list-style: none; }
+  .future-list li {
+    padding: 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95rem;
+  }
+  .future-list li::before {
+    content: "→";
+    color: #2E75B6;
+    font-weight: bold;
+  }
+
+  /* 頁尾按鈕 */
+  .footer-actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: opacity 0.2s;
+  }
+  .btn:hover { opacity: 0.85; }
+  .btn-primary { background: #1F4E79; color: white; }
+  .btn-outline { border: 2px solid #1F4E79; color: #1F4E79; background: white; }
+
+  @media (max-width: 600px) {
+    .screenshots { grid-template-columns: 1fr; }
+    .hero { padding: 40px 20px; }
+    .container { padding: 20px; }
+    nav { padding: 12px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 導覽列 -->
+<nav>
+  <a href="index.html" class="nav-brand">蘇芸平 ← 返回作品集</a>
+  <div class="nav-links">
+    <a href="#role">我的角色</a>
+    <a href="#architecture">系統架構</a>
+    <a href="#demo">功能展示</a>
+  </div>
+</nav>
+
+<!-- 頁首 -->
+<div style="background: linear-gradient(135deg, #1F4E79 0%, #2E75B6 100%);">
+  <div class="hero">
+    <div class="hero-tags">
+      <span class="tag">技術專案</span>
+      <span class="tag">團體專案</span>
+      <span class="tag">LINE Bot 架設</span>
+    </div>
+    <h1>股往今 LINE Bot</h1>
+    <p class="subtitle">即時股價、歷史走勢、最新時事——一站式財經資訊查詢</p>
+    <div class="hero-meta">
+      <span>📅 2024</span>
+      <span>👥 五人團隊</span>
+      <span>🔧 LINE Messaging API・Python・Render</span>
+    </div>
+  </div>
+</div>
+
+<!-- 主內容 -->
+<div class="container">
+
+  <!-- 我的角色 -->
+  <div id="role" class="role-highlight">
+    <h3>我在這個專案負責</h3>
+    <p>LINE Bot 架設——以 <strong>app.py</strong> 作為主程式，整合三個功能模組（股價查詢、走勢圖、財經時事），串接 LINE Messaging API，並部署至 Render 平台使 Bot 正式上線。</p>
+  </div>
+
+  <!-- 專案簡介 -->
+  <div class="card">
+    <div class="section-title">專案簡介</div>
+    <p style="line-height: 1.8; font-size: 0.95rem;">
+      散戶查詢財經資訊時，需要頻繁切換多個網頁與APP。「股往今LINE」觀察到這個痛點，以 LINE 聊天室作為入口，讓使用者直接輸入指令，即時取得股價、走勢圖與財經新聞，實現一站式資訊查詢。
+    </p>
+    <div class="tech-tags">
+      <span class="tech-tag">LINE Messaging API</span>
+      <span class="tech-tag">Python</span>
+      <span class="tech-tag">BeautifulSoup</span>
+      <span class="tech-tag">twstock</span>
+      <span class="tech-tag">matplotlib</span>
+      <span class="tech-tag">newspaper4k</span>
+      <span class="tech-tag">Cloudinary</span>
+      <span class="tech-tag">Render</span>
+    </div>
+  </div>
+
+  <!-- 系統架構 -->
+  <div id="architecture" class="card">
+    <div class="section-title">系統架構</div>
+    <ul class="feature-list">
+      <li><strong>stock_price.py（BeautifulSoup）</strong>　接收股票代號，爬取證交所網站即時股價，回傳給使用者</li>
+      <li><strong>stock_chart.py（twstock、matplotlib）</strong>　查詢近期收盤價，產生走勢圖PNG，上傳至Cloudinary後回傳圖片連結</li>
+      <li><strong>news_summary.py（newspaper4k）</strong>　接收關鍵字，透過 Google Custom Search API 查詢新聞，抓取摘要後統整回傳</li>
+      <li><strong>app.py（我負責）</strong>　主程式，串接以上三個模組，整合 LINE Messaging API，部署至 Render 使 Bot 正式上線</li>
+    </ul>
+    <img src="linebot-architecture.png" alt="系統架構圖" class="arch-img">
+  </div>
+
+  <!-- 功能展示 -->
+  <div id="demo" class="card">
+    <div class="section-title">功能展示</div>
+    <div class="screenshots">
+      <div class="screenshot-item">
+        <img src="linebot-stock-price.jpg" alt="即時股價查詢">
+        <p>即時股價查詢</p>
+      </div>
+      <div class="screenshot-item">
+        <img src="linebot-chart.jpg" alt="走勢圖回傳">
+        <p>走勢圖回傳</p>
+      </div>
+      <div class="screenshot-item">
+        <img src="linebot-news.jpg" alt="財經時事搜尋">
+        <p>財經時事搜尋</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 未來展望 -->
+  <div class="card">
+    <div class="section-title">未來展望</div>
+    <ul class="future-list">
+      <li>擴充支援海外市場股票查詢</li>
+      <li>新聞主題分類，讓使用者選擇感興趣的類別</li>
+      <li>強化股價圖表的視覺與資訊呈現</li>
+    </ul>
+  </div>
+
+  <!-- 頁尾按鈕 -->
+  <div class="footer-actions">
+    <a href="index.html" class="btn btn-primary">← 返回作品集</a>
+  </div>
+
+</div>
+
+</body>
+</html>
